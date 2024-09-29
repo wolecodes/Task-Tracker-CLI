@@ -13,6 +13,7 @@
     "type": "git",
     "url": "git+https://github.com/wolecodes/Task-Tracker-CLI.git"
   },
+  "type": "module",
   "keywords": [
     "cli"
   ],
