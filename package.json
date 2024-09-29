@@ -1,0 +1,25 @@
+{
+  "name": "task-tracker-cli",
+  "version": "1.0.0",
+  "description": "Simple CLI task tracker",
+  "main": "index.js",
+  "bin" : {
+    "task-cli" : "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wolecodes/Task-Tracker-CLI.git"
+  },
+  "keywords": [
+    "cli"
+  ],
+  "author": "wolecodes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wolecodes/Task-Tracker-CLI/issues"
+  },
+  "homepage": "https://github.com/wolecodes/Task-Tracker-CLI#readme"
+}
