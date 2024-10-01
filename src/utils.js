@@ -18,3 +18,31 @@ export const generateNextId = (task) => {
   const ids = task.map((task) => task.id);
   return ids.length ? Math.max(...ids) + 1 : 1;
 };
+
+export const filterByStatus = (task, statusArg) => {
+  let status = {
+    done: (task) => task.completed,
+    todo: (task) => !(task.completed && task.inProgress),
+    inProgress: (task) => task.inProgress,
+  };
+
+  const filterFn = status[statusArg.toLowerCase()];
+
+  return filterFn ? task.filter(filterFn) : null;
+};
+
+export const logTaskDetails = (task) => {
+  console.log("\n");
+  console.log("ID:", task.id);
+  console.log("Description:", task.description);
+  console.log(
+    "Status:",
+    `${
+      task.completed
+        ? colors.green + "Done"
+        : task.inProgress
+        ? colors.yellow + "In-progress"
+        : colors.red + "To-do"
+    }${colors.reset}`
+  );
+};

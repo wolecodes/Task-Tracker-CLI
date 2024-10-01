@@ -1,5 +1,10 @@
 import { getTaskDB, saveTaskDB, inserTaskDB } from "./taskDB";
-import { generateNextId, colors } from "./utils";
+import {
+  generateNextId,
+  colors,
+  logTaskDetails,
+  filterByStatus,
+} from "./utils";
 
 // Add, Update, and Delete tasks
 // Mark a task as in progress or done
@@ -40,7 +45,7 @@ export const getAlltask = async () => {
 /*
  * updateTask: update the task in the database
  * @param {number} - id of the task
- * @param {string} - currnet task description
+ * @param {string} - task description
  */
 export const updateTask = async (id, task) => {
   const task = await getAlltask();
@@ -81,4 +86,26 @@ export const deleteTask = async (id) => {
     //if task not found
     console.log(`${colors.red} Task ID ${id} not found.${colors.reset}`);
   }
+};
+
+//list task
+
+export const listTask = async (status) => {
+  const task = await getAlltask();
+  let filteredTask = task;
+  if (status) {
+    filteredTask = filterByStatus(task, status);
+
+    if (!filteredTask) {
+      console.log(
+        `${colors.red}Invalid status. Use 'done', 'to-do', or 'in-progress'.${colors.reset}`
+      );
+      return;
+    }
+  }
+
+  if(filteredTask.length === 0){
+    console.log(console.log(`${colors.yellow}No tasks found.${colors.reset}`));
+  }
+  filteredTask.forEach(logTaskDetails);
 };
