@@ -15,8 +15,6 @@ const colors = {
 export const command = async () => {
   if (processs.includes("add")) {
     const taskDescription = processs.slice(1).join(" ");
-
-    console.log(taskDescription);
     if (!taskDescription) {
       console.log(
         `${colors.red}Please provide a task description.${colors.reset}`
@@ -26,6 +24,21 @@ export const command = async () => {
       );
     } else {
       await taskFunction.addNewTask(taskDescription);
+    }
+  } else if (processs.includes("update")) {
+    const id = processs[0];
+    console.log(id);
+    const newTaskDescription = processs.slice(2).join(" ");
+
+    if (!id || !newTaskDescription) {
+      console.log(
+        `${colors.red}Please provide a task ID and new description.${colors.reset}`
+      );
+      console.log(
+        `${colors.yellow}Sample: node index.js update 1 "Updated task description"${colors.reset}`
+      );
+    } else {
+      await taskFunction.updateTask(id, newTaskDescription);
     }
   }
 };

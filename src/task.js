@@ -50,19 +50,19 @@ export const addNewTask = async (description) => {
  * @param {number} - id of the task
  * @param {string} - task description
  */
-export const updateTask = async (id, task) => {
+export const updateTask = async (id, description) => {
   const tasks = await getTaskDB();
 
   //get task and find a task based on the id
-  const currentTaskID = tasks.find((task) => task.id === +id);
+  const currentTask = tasks.find((task) => task.id === +id);
 
-  if (currentTaskID) {
-    tasks.description = task;
+  if (currentTask) {
+    currentTask.description = description;
 
     //upadate the updatedAt time in the database
-    tasks.updatedAt = new Date().toISOString();
+    currentTask.updatedAt = new Date().toISOString();
     //save the updated task in the database
-    await saveTaskDB(task);
+    await saveTaskDB(tasks);
     console.log(`${colors.green}Task with ID ${id} updated.${colors.reset}`);
   } else {
     console.log(`${colors.red}Task with ID ${id} not found.${colors.reset}`);
