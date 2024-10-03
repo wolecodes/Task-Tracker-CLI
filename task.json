@@ -1,3 +1,10 @@
-{
-  "description": ""
-}
+[
+  {
+    "id": 1,
+    "description": "check my diet routine",
+    "completed": false,
+    "inProgress": false,
+    "createdAt": "2024-10-03T17:59:14.464Z",
+    "updatedAt": "Thu Oct 03 2024"
+  }
+]

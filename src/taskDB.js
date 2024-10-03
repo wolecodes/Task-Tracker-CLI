@@ -1,7 +1,8 @@
 //this file contains operations to get, save and insert tasks in the database
 import fs from "fs/promises";
 
-const DB_path = new URL("../taskDB.json", import.meta.url).pathname;
+const DB_path = new URL("../task.json", import.meta.url).pathname;
+console.log(DB_path);
 
 //get task from database
 
@@ -10,8 +11,12 @@ const DB_path = new URL("../taskDB.json", import.meta.url).pathname;
  * @returns {Promise} - returns the task from the database
  */
 export const getTaskDB = async () => {
-  const task = await fs.readFile(DB_path, "utf-8");
-  return JSON.parse(task);
+  try {
+    const task = await fs.readFile(DB_path, "utf-8");
+    return JSON.parse(task);
+  } catch (error) {
+    return [];
+  }
 };
 
 //add task to database
@@ -19,9 +24,9 @@ export const getTaskDB = async () => {
  * saveTaskDB: this function writes the task to the database
  * @returns {Promise} - returns the task to the database
  */
-export const saveTaskDB = async (task) => {
-  const taskDB = await fs.writeFile(DB_path, JSON.stringify(task, null, 2));
-  return taskDB;
+export const saveTaskDB = async (db) => {
+  await fs.writeFile(DB_path, JSON.stringify(db, null, 2));
+  return db;
 };
 
 //insert file in the database
@@ -30,8 +35,12 @@ export const saveTaskDB = async (task) => {
  * @returns {obj} - returns the inserted task to the database
  */
 export const inserTaskDB = async (task) => {
-  const taskDB = await getTaskDB();
-  taskDB.push(task);
-  await saveTaskDB(taskDB);
-  return task;
+  try {
+    const taskDB = await getTaskDB();
+    taskDB.push(task);
+    await saveTaskDB(taskDB);
+    return task;
+  } catch (error) {
+    console.log("Error saving task");
+  }
 };

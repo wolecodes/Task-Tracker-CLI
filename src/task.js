@@ -1,10 +1,10 @@
-import { getTaskDB, saveTaskDB, inserTaskDB } from "./taskDB";
+import { getTaskDB, saveTaskDB, inserTaskDB } from "./taskDB.js";
 import {
   generateNextId,
   colors,
   logTaskDetails,
   filterByStatus,
-} from "./utils";
+} from "./utils.js";
 
 // Add, Update, and Delete tasks
 // Mark a task as in progress or done
@@ -13,32 +13,35 @@ import {
 // List all tasks that are not done
 // List all tasks that are in progress
 
+// get all task from the db
+
+const getAlltask = async () => {
+  const task = await getTaskDB();
+  return task.description;
+};
 //add task to database
 /*
  * addNewTask: this function adds a new task to the database
  * @param {string} - task
  */
-export const addNewTask = async (task) => {
-  //create a new task to save to the db
+export const addNewTask = async (description) => {
+  const tasks = await getTaskDB();
+  //create a new task
   const newTask = {
-    id: generateNextId(task),
-    description: task,
+    id: generateNextId(tasks),
+    description: description,
     completed: false,
     inProgress: false,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toDateString(),
   };
-
+  tasks.push(newTask);
   //save task into the db.
   await inserTaskDB(newTask);
-
+  console.log(
+    `${colors.green}Task added successfully! (ID: ${newTask.id})${colors.reset}`
+  );
   return newTask;
-};
-
-// get all task from the db
-export const getAlltask = async () => {
-  const task = await getTaskDB();
-  return task.description;
 };
 
 //update task in database
@@ -48,16 +51,16 @@ export const getAlltask = async () => {
  * @param {string} - task description
  */
 export const updateTask = async (id, task) => {
-  const task = await getAlltask();
+  const tasks = await getTaskDB();
 
   //get task and find a task based on the id
-  const currentTaskID = task.find((task) => task.id === +id);
+  const currentTaskID = tasks.find((task) => task.id === +id);
 
   if (currentTaskID) {
-    task.description = task;
+    tasks.description = task;
 
     //upadate the updatedAt time in the database
-    task.updatedAt = new Date().toISOString();
+    tasks.updatedAt = new Date().toISOString();
     //save the updated task in the database
     await saveTaskDB(task);
     console.log(`${colors.green}Task with ID ${id} updated.${colors.reset}`);
@@ -73,7 +76,7 @@ export const updateTask = async (id, task) => {
  */
 
 export const deleteTask = async (id) => {
-  const task = await getAlltask();
+  const task = await getTaskDB();
 
   //filtered the task the task that are not of the same to the id
   let filteredTask = task.filter((task) => task.id !== +id);
@@ -104,8 +107,41 @@ export const listTask = async (status) => {
     }
   }
 
-  if(filteredTask.length === 0){
+  if (filteredTask.length === 0) {
     console.log(console.log(`${colors.yellow}No tasks found.${colors.reset}`));
   }
   filteredTask.forEach(logTaskDetails);
+};
+
+//list task in-progress
+
+export const inProgress = async (id) => {
+  const tasks = await getAlltask();
+  const task = tasks.find((task) => task.id === +id);
+
+  if (task) {
+    task.inProgress = true;
+    task.completed = false;
+    await saveTaskDB(task);
+    console.log(
+      `${colors.yellow}Task ID ${id} marked as in-progress.${colors.reset}`
+    );
+  } else {
+    console.log(`${colors.red}Task with ID ${id} not found.${colors.reset}`);
+  }
+};
+
+//list mark task as done
+export const markDone = async (id) => {
+  const tasks = await getAlltask();
+  const task = tasks.find((task) => task.id === +id);
+
+  if (task) {
+    task.completed = true;
+    task.inProgress = false;
+    await saveTaskDB(task);
+    console.log(`${colors.green}Task ID ${id} marked as done.${colors.reset}`);
+  } else {
+    console.log(`${colors.red}Task with ID ${id} not found.${colors.reset}`);
+  }
 };

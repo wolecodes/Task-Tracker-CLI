@@ -14,8 +14,8 @@ export const colors = {
  * @param {Array} - task
  * @returns {number} - returns the next id for the task
  */
-export const generateNextId = (task) => {
-  const ids = task.map((task) => task.id);
+export const generateNextId = (tasks) => {
+  const ids = tasks.map((task) => task.id);
   return ids.length ? Math.max(...ids) + 1 : 1;
 };
 
