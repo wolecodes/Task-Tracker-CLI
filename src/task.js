@@ -13,12 +13,6 @@ import {
 // List all tasks that are not done
 // List all tasks that are in progress
 
-// get all task from the db
-
-const getAlltask = async () => {
-  const task = await getTaskDB();
-  return task.description;
-};
 //add task to database
 /*
  * addNewTask: this function adds a new task to the database
@@ -80,25 +74,27 @@ export const deleteTask = async (id) => {
 
   //filtered the task the task that are not of the same to the id
   let filteredTask = task.filter((task) => task.id !== +id);
+  console.log(filteredTask);
 
   //check if the task was removed
-  if (filteredTask.length > task.length) {
+  if (filteredTask.length < task.length) {
     //save the task
     await saveTaskDB(filteredTask);
     console.log(`${colors.green} Task ID ${id} deleted.${colors.reset}`);
     //if task not found
+  } else {
     console.log(`${colors.red} Task ID ${id} not found.${colors.reset}`);
   }
 };
 
 //list task
 
-export const listTask = async (status) => {
-  const task = await getAlltask();
+export const listTask = async (status = null) => {
+  const task = await getTaskDB();
   let filteredTask = task;
+
   if (status) {
     filteredTask = filterByStatus(task, status);
-
     if (!filteredTask) {
       console.log(
         `${colors.red}Invalid status. Use 'done', 'to-do', or 'in-progress'.${colors.reset}`
@@ -106,11 +102,12 @@ export const listTask = async (status) => {
       return;
     }
   }
-
+  // console.log(filteredTask);
   if (filteredTask.length === 0) {
-    console.log(console.log(`${colors.yellow}No tasks found.${colors.reset}`));
+    console.log(`${colors.yellow} No task found.${colors.reset}`);
+  } else {
+    filteredTask.forEach(logTaskDetails);
   }
-  filteredTask.forEach(logTaskDetails);
 };
 
 //list task in-progress
