@@ -113,13 +113,13 @@ export const listTask = async (status = null) => {
 //list task in-progress
 
 export const inProgress = async (id) => {
-  const tasks = await getAlltask();
+  const tasks = await getTaskDB();
   const task = tasks.find((task) => task.id === +id);
 
   if (task) {
     task.inProgress = true;
     task.completed = false;
-    await saveTaskDB(task);
+    await saveTaskDB(tasks);
     console.log(
       `${colors.yellow}Task ID ${id} marked as in-progress.${colors.reset}`
     );
@@ -130,13 +130,17 @@ export const inProgress = async (id) => {
 
 //list mark task as done
 export const markDone = async (id) => {
-  const tasks = await getAlltask();
+  const tasks = await getTaskDB();
   const task = tasks.find((task) => task.id === +id);
+
+  console.log(task);
 
   if (task) {
     task.completed = true;
     task.inProgress = false;
-    await saveTaskDB(task);
+    console.log(task);
+    console.log(tasks);
+    await saveTaskDB(tasks);
     console.log(`${colors.green}Task ID ${id} marked as done.${colors.reset}`);
   } else {
     console.log(`${colors.red}Task with ID ${id} not found.${colors.reset}`);

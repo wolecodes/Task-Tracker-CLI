@@ -1,17 +1,10 @@
 import * as taskFunction from "./task.js";
+import { colors } from "./utils.js";
 
-//creating a command line
+//creating a command
 
 const args = process.argv.slice(2);
-
-const colors = {
-  reset: "\x1b[0m",
-  green: "\x1b[32m",
-  red: "\x1b[31m",
-  yellow: "\x1b[33m",
-  cyan: "\x1b[36m",
-};
-
+const id = args[1];
 export const command = async () => {
   if (args.includes("add")) {
     const taskDescription = args.slice(1).join(" ");
@@ -30,7 +23,6 @@ export const command = async () => {
     await taskFunction.listTask(status);
   } else if (args.includes("update")) {
     const newTaskDescription = args.slice(2).join(" ");
-    const id = args[0];
     if (!id || !newTaskDescription) {
       console.log(
         `${colors.red}Please provide a task ID and new description.${colors.reset}`
@@ -42,8 +34,6 @@ export const command = async () => {
       await taskFunction.updateTask(id, newTaskDescription);
     }
   } else if (args.includes("delete")) {
-    const id = args[1];
-    console.log(id);
     if (!id) {
       console.log(`${colors.red} Please provide a task ID. ${colors.reset}`);
       console.log(
@@ -51,6 +41,18 @@ export const command = async () => {
       );
     } else {
       await taskFunction.deleteTask(id);
+    }
+  } else if (args.includes("mark-done")) {
+    if (!id) {
+      console.log(`${colors.red}Please provide a task ID.${colors.reset}`);
+    } else {
+      await taskFunction.markDone(id);
+    }
+  } else if (args.includes("in-progress")) {
+    if (!id) {
+      console.log(`${colors.red}Please provide a task ID.${colors.reset}`);
+    } else {
+      await taskFunction.inProgress(id);
     }
   }
 };
