@@ -11,12 +11,14 @@ console.log(DB_path);
  * @returns {Promise} - returns the task from the database
  */
 export const getTaskDB = async () => {
-  try {
-    const task = await fs.readFile(DB_path, "utf-8");
-    return JSON.parse(task);
-  } catch (error) {
-    return [];
-  }
+  // try {
+  //   const task = await fs.readFile(DB_path, "utf-8");
+  //   return JSON.parse(task);
+  // } catch (error) {
+  //   return [];
+  // }
+  const task = await fs.readFile(DB_path, "utf-8");
+  return JSON.parse(task);
 };
 
 //add task to database

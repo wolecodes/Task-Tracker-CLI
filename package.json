@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "Simple CLI task tracker",
   "main": "index.js",
-  "bin" : {
-    "task-cli" : "./index.js"
+  "bin": {
+    "task-cli": "./index.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/wolecodes/Task-Tracker-CLI/issues"
   },
-  "homepage": "https://github.com/wolecodes/Task-Tracker-CLI#readme"
+  "homepage": "https://github.com/wolecodes/Task-Tracker-CLI#readme",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
 }
