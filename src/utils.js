@@ -49,7 +49,7 @@ export const logTaskDetails = (task) => {
 
 export const log = () => {
   console.log(
-    `${colors.cyan}Usage: node index.js <command> [arguments]${colors.reset}`
+    `${colors.cyan}Usage: task-cli <command> [arguments]${colors.reset}`
   );
   console.log(`${colors.cyan}Commands:${colors.reset}`);
   console.log(

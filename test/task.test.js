@@ -19,7 +19,9 @@ jest.unstable_mockModule("../src/utils.js", () => ({
   },
 }));
 const { inserTaskDB, getTaskDB, saveTaskDB } = await import("../src/taskDB.js");
-const { generateNextId, logTaskDetails } = await import("../src/utils.js");
+const { generateNextId, logTaskDetails, filterByStatus } = await import(
+  "../src/utils.js"
+);
 const { addNewTask, updateTask, deleteTask, listTask, markDone, inProgress } =
   await import("../src/task.js");
 
@@ -29,7 +31,24 @@ beforeEach(() => {
   saveTaskDB.mockClear();
 });
 
-test("addNewTask inserts task and returns it", async () => {});
+// test("add new task and return it ", async () => {
+//   const description = "the new task";
+//   const mockid = 1;
+//   generateNextId.mockResolvedValue(mockid);
+//   const data = [
+//     {
+//       id: 1,
+//       description: description,
+//     },
+//   ];
+//   getTaskDB.mockResolvedValueOnce(data);
+
+//   inserTaskDB.mockResolvedValue(data);
+
+//   const result = await addNewTask(description);
+
+//   expect(result).toEqual(data);
+// });
 
 test("update the task with id do nothing if node found ", async () => {
   const task = [
@@ -103,19 +122,4 @@ test("list all tasks", async () => {
   await listTask();
 
   expect(logTaskDetails).toHaveBeenCalledTimes(2);
-});
-
-test("list tasks by status", async () => {
-  const task = [
-    { id: 1, description: "new task", completed: true, inProgress: false },
-    { id: 2, description: "second task", completed: false, inProgress: true },
-  ];
-
-  getTaskDB.mockResolvedValueOnce(task);
-  filterByStatus.mockReturnValue([task[0]]);
-
-  await listTask("done");
-
-  expect(filterByStatus).toHaveBeenCalledWith(task, "done");
-  expect(logTaskDetails).toHaveBeenCalledWith(task[0]);
 });

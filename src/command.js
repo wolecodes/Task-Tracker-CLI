@@ -13,7 +13,7 @@ export const command = async () => {
         `${colors.red}Please provide a task description.${colors.reset}`
       );
       console.log(
-        `${colors.yellow}Sample: node index.js add "Drink Water"${colors.reset}`
+        `${colors.yellow}Sample: task-cli  add "Drink Water"${colors.reset}`
       );
     } else {
       await taskFunction.addNewTask(taskDescription);
@@ -28,7 +28,7 @@ export const command = async () => {
         `${colors.red}Please provide a task ID and new description.${colors.reset}`
       );
       console.log(
-        `${colors.yellow}Sample: node index.js update 1 "Updated task description"${colors.reset}`
+        `${colors.yellow}Sample: task-cli update 1 "Updated task description"${colors.reset}`
       );
     } else {
       await taskFunction.updateTask(id, newTaskDescription);
@@ -36,9 +36,7 @@ export const command = async () => {
   } else if (args.includes("delete")) {
     if (!id) {
       console.log(`${colors.red} Please provide a task ID. ${colors.reset}`);
-      console.log(
-        `${colors.yellow}Sample: node index.js delete 1.${colors.reset}`
-      );
+      console.log(`${colors.yellow}Sample: task-cli  delete 1.${colors.reset}`);
     } else {
       await taskFunction.deleteTask(id);
     }

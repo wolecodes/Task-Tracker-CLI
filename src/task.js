@@ -87,7 +87,6 @@ export const deleteTask = async (id) => {
 };
 
 //list task
-
 export const listTask = async (status = null) => {
   const task = await getTaskDB();
   let filteredTask = task;
