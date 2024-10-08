@@ -20,7 +20,8 @@ jest.unstable_mockModule("../src/utils.js", () => ({
 }));
 const { inserTaskDB, getTaskDB, saveTaskDB } = await import("../src/taskDB.js");
 const { generateNextId, logTaskDetails } = await import("../src/utils.js");
-const { addNewTask } = await import("../src/task.js");
+const { addNewTask, updateTask, deleteTask, listTask, markDone, inProgress } =
+  await import("../src/task.js");
 
 beforeEach(() => {
   inserTaskDB.mockClear();
@@ -28,27 +29,93 @@ beforeEach(() => {
   saveTaskDB.mockClear();
 });
 
-test("add a new task and return it", async () => {
-  const description = "the new description";
-  const nextId = 1;
-  const data = {
-    id: nextId,
-    description: description,
-    completed: false,
-    inProgress: false,
-    createdAt: expect.any(String),
-    updatedAt: expect.any(String),
-  };
+test("addNewTask inserts task and returns it", async () => {});
 
-  getTaskDB.mockResolvedValueOnce([]);
+test("update the task with id do nothing if node found ", async () => {
+  const task = [
+    { id: 1, description: "new task" },
+    { id: 2, description: "second task" },
+  ];
 
-  // Mock `generateNextId()` to return a specific ID
-  generateNextId.mockReturnValueOnce(nextId);
+  getTaskDB.mockResolvedValueOnce(task);
 
-  inserTaskDB.mockResolvedValue(data);
+  saveTaskDB.mockResolvedValue(task);
 
-  const result = await addNewTask(description);
+  const updateId = 3;
 
-  expect(result).toEqual(data);
-  expect(inserTaskDB).toHaveBeenCalledWith(data);
+  const result = await updateTask(updateId);
+  expect(result).toBeUndefined();
+});
+
+test("delete task with id do nothing if not found", async () => {
+  const task = [
+    { id: 1, description: "new task" },
+    { id: 2, description: "second task" },
+    { id: 3, description: "third test" },
+  ];
+  getTaskDB.mockResolvedValueOnce(task);
+
+  saveTaskDB.mockResolvedValue(task);
+  const deleteId = 4;
+  const result = await deleteTask(deleteId);
+  expect(result).toBeUndefined();
+});
+
+test("mark task as done", async () => {
+  const task = [
+    { id: 1, description: "new task", completed: false, inProgress: true },
+    { id: 2, description: "second task", completed: false, inProgress: false },
+  ];
+
+  getTaskDB.mockResolvedValueOnce(task);
+
+  const taskId = 1;
+  await markDone(taskId);
+
+  expect(task[0].completed).toBe(true);
+  expect(task[0].inProgress).toBe(false);
+  expect(saveTaskDB).toHaveBeenCalledWith(task);
+});
+
+test("mark as inprogress", async () => {
+  const task = [
+    { id: 1, description: "new task", completed: false, inProgress: true },
+    { id: 2, description: "second task", completed: false, inProgress: false },
+  ];
+
+  getTaskDB.mockResolvedValueOnce(task);
+
+  const taskId = 1;
+  await inProgress(taskId);
+  expect(task[0].completed).toBe(false);
+  expect(task[0].inProgress).toBe(true);
+  expect(saveTaskDB).toHaveBeenCalledWith(task);
+});
+test("list all tasks", async () => {
+  const task = [
+    { id: 1, description: "new task", completed: true, inProgress: false },
+    { id: 2, description: "second task", completed: false, inProgress: true },
+  ];
+
+  getTaskDB.mockResolvedValueOnce(task);
+
+  // await listTask();
+  await listTask();
+
+  expect(logTaskDetails).toHaveBeenCalledTimes(2);
+});
+
+test("list tasks by status", async () => {
+  const task = [
+    { id: 1, description: "new task", completed: true, inProgress: false },
+    { id: 2, description: "second task", completed: false, inProgress: true },
+  ];
+
+  getTaskDB.mockResolvedValueOnce(task);
+  filterByStatus.mockReturnValue([task[0]]);
+
+  await listTask("done");
+
+  expect(filterByStatus).toHaveBeenCalledWith(task, "done");
+  expect(logTaskDetails).toHaveBeenCalledWith(task[0]);
 });

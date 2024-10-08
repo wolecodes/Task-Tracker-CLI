@@ -74,7 +74,6 @@ export const deleteTask = async (id) => {
 
   //filtered the task the task that are not of the same to the id
   let filteredTask = task.filter((task) => task.id !== +id);
-  console.log(filteredTask);
 
   //check if the task was removed
   if (filteredTask.length < task.length) {
@@ -102,7 +101,7 @@ export const listTask = async (status = null) => {
       return;
     }
   }
-  // console.log(filteredTask);
+
   if (filteredTask.length === 0) {
     console.log(`${colors.yellow} No task found.${colors.reset}`);
   } else {

@@ -46,3 +46,28 @@ export const logTaskDetails = (task) => {
     }${colors.reset}`
   );
 };
+
+export const log = () => {
+  console.log(
+    `${colors.cyan}Usage: node index.js <command> [arguments]${colors.reset}`
+  );
+  console.log(`${colors.cyan}Commands:${colors.reset}`);
+  console.log(
+    `${colors.yellow}  add <task description>            - Add a new task${colors.reset}`
+  );
+  console.log(
+    `${colors.yellow}  list [status]                     - List tasks (status: done, to-do, in-progress)${colors.reset}`
+  );
+  console.log(
+    `${colors.yellow}  update <id> <new description>     - Update a task by ID${colors.reset}`
+  );
+  console.log(
+    `${colors.yellow}  delete <id>                       - Delete a task by ID${colors.reset}`
+  );
+  console.log(
+    `${colors.yellow}  mark-in-progress <id>             - Mark a task as in-progress by ID${colors.reset}`
+  );
+  console.log(
+    `${colors.yellow}  mark-done <id>                    - Mark a task as done by ID${colors.reset}`
+  );
+};

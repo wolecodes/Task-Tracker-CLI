@@ -1,5 +1,5 @@
 import * as taskFunction from "./task.js";
-import { colors } from "./utils.js";
+import { colors, log } from "./utils.js";
 
 //creating a command
 
@@ -54,6 +54,8 @@ export const command = async () => {
     } else {
       await taskFunction.inProgress(id);
     }
+  } else {
+    log();
   }
 };
 
