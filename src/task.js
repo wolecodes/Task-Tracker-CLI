@@ -132,7 +132,7 @@ export const markDone = async (id) => {
   const task = tasks.find((task) => task.id === +id);
 
   console.log(task);
-
+// check if the task and and update the progress
   if (task) {
     task.completed = true;
     task.inProgress = false;
